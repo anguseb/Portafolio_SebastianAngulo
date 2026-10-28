@@ -17,6 +17,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -44,4 +46,8 @@ public class Categoria implements Serializable {
 
     @Column(name = "activo")
     private Boolean activo;
+    
+    //Relacion de uno a muchos
+    @OneToMany (mappedBy= "categoria")
+    private List<Producto> productos;
 }
