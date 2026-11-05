@@ -9,6 +9,7 @@ package Portafolio_SebastianAngulo.controller;
  * @author home
  */
 
+import Portafolio_SebastianAngulo.service.CategoriaService;
 import Portafolio_SebastianAngulo.service.ProductoService;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Controller;
@@ -23,15 +24,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ConsultaController {
 
     private final ProductoService productoService;
+    private final CategoriaService categoriaService;
 
-    public ConsultaController(ProductoService productoService) {
+    public ConsultaController(ProductoService productoService, CategoriaService categoriaService) {
         this.productoService = productoService;
+        this.categoriaService = categoriaService;
     }
 
     @GetMapping("/listado")
     public String listado(Model model) {
         var productos = productoService.getProductos(false);
         model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categoriaService.getCategorias(false));
+        return "/consultas/listado";
+    }
+
+    @PostMapping("/consultaCategoria")
+    public String consultaCategoria(@RequestParam() Integer idCategoria,
+            Model model) {
+        var productos = productoService.consultaPorCategoria(idCategoria);
+        model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categoriaService.getCategorias(false));
+        model.addAttribute("idCategoria", idCategoria);
         return "/consultas/listado";
     }
 
@@ -41,6 +55,7 @@ public class ConsultaController {
             Model model) {
         var productos = productoService.consultaDerivada(precioInf, precioSup);
         model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categoriaService.getCategorias(false));
         model.addAttribute("precioInf", precioInf);
         model.addAttribute("precioSup", precioSup);
         return "/consultas/listado";
@@ -52,6 +67,7 @@ public class ConsultaController {
             Model model) {
         var productos = productoService.consultaJPQL(precioInf, precioSup);
         model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categoriaService.getCategorias(false));
         model.addAttribute("precioInf", precioInf);
         model.addAttribute("precioSup", precioSup);
         return "/consultas/listado";
@@ -63,6 +79,7 @@ public class ConsultaController {
             Model model) {
         var productos = productoService.consultaSQL(precioInf, precioSup);
         model.addAttribute("productos", productos);
+        model.addAttribute("categorias", categoriaService.getCategorias(false));
         model.addAttribute("precioInf", precioInf);
         model.addAttribute("precioSup", precioSup);
         return "/consultas/listado";

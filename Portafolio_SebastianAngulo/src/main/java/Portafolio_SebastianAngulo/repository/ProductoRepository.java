@@ -20,7 +20,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     public List<Producto> findByActivoTrue();
     
     public List<Producto> findByPrecioBetweenOrderByPrecioAsc(double precioInf, double precioSup);
-    
+
+    public List<Producto> findByCategoriaIdCategoria(Integer idCategoria);
+
     @Query(nativeQuery= true, value="SELECT * FROM Producto p WHERE p.precio BETWEEN :precioInf AND :precioSup ORDER BY p.precio ASC")
     public List<Producto> consultaSQL(@Param("precioInf")double precioInf, @Param("precioSup") double precioSup);
 }

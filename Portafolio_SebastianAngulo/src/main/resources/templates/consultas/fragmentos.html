@@ -68,8 +68,36 @@
             <div th:replace="~{consultas/fragmentos :: formConsulta('primary',#{consultas.derivadas},'/consultas/consultaDerivada')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('warning',#{consultas.jpql},'/consultas/consultaJPQL')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('success',#{consultas.sql},'/consultas/consultaSQL')}"/>
-            <div class='card'><p>Acá va su Práctica #2</p></div>
+            <div th:replace="~{consultas/fragmentos :: categoria}"/>
         </section>
+
+        <div th:fragment='categoria'>
+            <form method="post" th:action='@{/consultas/consultaCategoria}' class='was-validated'>
+                <div class='card p-2'>
+                    <div class="card-header text-center text-white bg-info">
+                        <h5>Consulta por Categoría</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class='mb-3'>
+                            <label>Categoría</label>
+                            <select name='idCategoria' class='form-select' required>
+                                <option value="">-- Seleccione --</option>
+                                <option th:each="c : ${categorias}"
+                                        th:value="${c.idCategoria}"
+                                        th:text="${c.descripcion}"
+                                        th:selected="${idCategoria != null and idCategoria.equals(c.idCategoria)}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type='submit' class='btn btn-info text-white'>
+                            <i class='fa-solid fa-magnifying-glass'></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div th:fragment='formConsulta(colorForm, textoForm, urlForm)'>
             <form method="post" th:action='@{${urlForm}}' class='was-validated'>
